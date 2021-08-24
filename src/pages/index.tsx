@@ -1,7 +1,7 @@
 import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useState, ChangeEvent } from "react";
-import { useSessionStorage } from "react-use";
+import { useSessionStorage, useLocalStorage } from "react-use";
 import { authorize } from "~/lib/authorize";
 
 type Props = {
@@ -12,10 +12,9 @@ type Props = {
 
 const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   const [text, setText] = useState(q ?? "");
-  const [sessionToken, setSessionToken] = useSessionStorage(
-    "session_token",
-    ""
-  );
+  const [sessionToken, setSessionToken] =
+    useSessionStorage<string>("session_token");
+  const [accessToken, setAccessToken] = useLocalStorage<string>("access_token");
 
   const onChangeInput = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
@@ -33,14 +32,20 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     const sessionToken = sessionTokenJson["session_token"];
     setSessionToken(sessionToken);
 
-    const accessTokenBody = JSON.stringify({ sessionToken });
-    const accessTokenResponse = await fetch(`api/accessToken`, {
+    const iksmBody = JSON.stringify({ sessionToken });
+    const iksmResponse = await fetch(`api/iksm`, {
       method: "POST",
-      body: accessTokenBody,
+      body: iksmBody,
     });
-    const accessTokenJson = await accessTokenResponse.json();
-    console.log(accessTokenJson);
-    setSessionToken(accessTokenJson["access_token"]);
+    const iksmJson = await iksmResponse.json();
+    console.log(iksmJson);
+
+    // const accessTokenResponse = await fetch(`api/accessToken`, {
+    //   method: "POST",
+    //   body: accessTokenBody,
+    // });
+    // const accessTokenJson = await accessTokenResponse.json();
+    // setAccessToken(accessTokenJson["access_token"]);
   };
 
   return (
@@ -74,7 +79,18 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
           >
             view
           </button>
-          <p>{sessionToken}</p>
+          <p
+            className="w-full overflow-hidden overflow-ellipsis"
+            key="sessionToken"
+          >
+            {sessionToken}
+          </p>
+          <p
+            className="w-full overflow-hidden overflow-ellipsis"
+            key="accessToken"
+          >
+            {accessToken}
+          </p>
         </div>
       </main>
     </div>
