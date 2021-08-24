@@ -1,6 +1,7 @@
 import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useState, ChangeEvent } from "react";
+import { useSessionStorage } from "react-use";
 import { authorize } from "~/lib/authorize";
 
 type Props = {
@@ -11,6 +12,10 @@ type Props = {
 
 const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   const [text, setText] = useState(q ?? "");
+  const [sessionToken, setSessionToken] = useSessionStorage(
+    "session_token",
+    ""
+  );
 
   const onChangeInput = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
@@ -19,12 +24,23 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   };
 
   const submit = async (url: string) => {
-    const body = JSON.stringify({ url, sessionTokenCodeVerifier });
-    const res = await fetch(`api/sessionToken`, {
+    const sessionTokenBody = JSON.stringify({ url, sessionTokenCodeVerifier });
+    const sessionTokenResponse = await fetch(`api/sessionToken`, {
       method: "POST",
-      body,
+      body: sessionTokenBody,
     });
-    console.log(res);
+    const sessionTokenJson = await sessionTokenResponse.json();
+    const sessionToken = sessionTokenJson["session_token"];
+    setSessionToken(sessionToken);
+
+    const accessTokenBody = JSON.stringify({ sessionToken });
+    const accessTokenResponse = await fetch(`api/accessToken`, {
+      method: "POST",
+      body: accessTokenBody,
+    });
+    const accessTokenJson = await accessTokenResponse.json();
+    console.log(accessTokenJson);
+    setSessionToken(accessTokenJson["access_token"]);
   };
 
   return (
@@ -58,6 +74,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
           >
             view
           </button>
+          <p>{sessionToken}</p>
         </div>
       </main>
     </div>

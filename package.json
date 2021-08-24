@@ -24,6 +24,7 @@
     "next-absolute-url": "^1.2.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-use": "^17.2.4",
     "swr": "^0.5.6",
     "url-parse": "^1.5.3"
   },

@@ -7,7 +7,7 @@ export const acountSessionTokenURI =
 export const acountAccessTokenURI =
   "https://accounts.nintendo.com/connect/1.0.0/api/token";
 export const acountMeURI = "https://api.accounts.nintendo.com/2.0.0/users/me";
-export const userAgent = "OnlineLounge/1.9.0 NASDKAPI Android";
+export const userAgent = "iksm/0.0.0 iksm-chan Android";
 export const customURLScheme = `npf${clientId}`;
 export const redirectURL = `${customURLScheme}://auth`;
 export const scope = "openid user user.birthday user.mii user.screenName";
