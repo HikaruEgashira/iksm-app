@@ -1,0 +1,61 @@
+name: CI
+on: [push]
+jobs:
+  build:
+    name: Build, lint
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node: ["14.x"]
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install deps and build (with cache)
+        uses: bahmutov/npm-install@v1
+
+      - name: Lint
+        id: lint
+        run: yarn lint
+
+      - name: Format
+        id: format
+        run: yarn format --check
+
+      # - name: Test
+      #   id: test
+      #   run: yarn test --ci --coverage --maxWorkers=2
+
+      # - name: Build
+      #   id: build
+      #   run: yarn build
+
+      - if: failure() && steps.lint.outcome == 'failure'
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: "リントでエラーが発生しました！`yarn lint`でエラーの出る箇所の修正をお願いします🙏"
+          check_for_duplicate_msg: false
+      # - if: failure() && steps.test.outcome == 'failure'
+      #   uses: unsplash/comment-on-pr@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     msg: "テストでエラーが発生しました！`yarn test`でテストの修正お願いします🙏"
+      #     check_for_duplicate_msg: false
+      # - if: failure() && steps.build.outcome == 'failure'
+      #   uses: unsplash/comment-on-pr@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     msg: "ビルドでエラーが発生しました。`yarn build`でテストの修正お願いします🙏"
+      #     check_for_duplicate_msg: false
