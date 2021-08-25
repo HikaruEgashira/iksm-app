@@ -2,18 +2,130 @@
   "swagger": "2.0",
   "info": {
     "version": "0.1.0",
-    "title": "APIドキュメント"
+    "title": "iksm chan"
   },
   "paths": {
     "/api/iksm": {
-      "get": {
+      "post": {
+        "parameters": [
+          {
+            "name": "sessionToken",
+            "description": "`api/sessionToken`でゲットできる",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "return iksm_session",
+            "description": "iksm_session",
             "schema": {
               "type": "object",
               "properties": {
-                "iksm_session": {
+                "iksmSession": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "任天堂APIが返した何かしらのエラー",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessionToken": {
+      "post": {
+        "parameters": [
+          {
+            "name": "url",
+            "description": "この人にするのボタンから取れるURL",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sessionTokenCodeVerifier",
+            "description": "URLを生成したsessionTokenCodeVerifier",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sessionToken",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sessionToken": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "任天堂APIが返した何かしらのエラー",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/accessToken": {
+      "post": {
+        "parameters": [
+          {
+            "name": "sessionToken",
+            "description": "`/api/sessionToken`でゲットできる",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "accessToken",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "string"
+                },
+                "idToken": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "任天堂APIが返した何かしらのエラー",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
                   "type": "string"
                 }
               }

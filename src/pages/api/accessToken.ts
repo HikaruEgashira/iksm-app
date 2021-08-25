@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getAccessToken, SuccessResponse } from "~/lib/getAccessToken";
+import { jsonParse } from "~/lib/jsonParse";
 import { ErrorResponse } from "~/lib/types";
 
 export default async function handler(
@@ -9,7 +10,10 @@ export default async function handler(
   if (req.method !== "POST")
     return res.status(405).json({ error: "Method Not Allowed" });
 
-  const body = JSON.parse(req.body);
+  const body = jsonParse<{ sessionToken: string }>(req.body);
+  if ("error" in body) {
+    return res.status(400).json(body);
+  }
   const sessionToken = body.sessionToken;
   if (!sessionToken) {
     return res.status(400).json({ error: "sessionToken is required" });

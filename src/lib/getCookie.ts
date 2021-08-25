@@ -8,7 +8,9 @@ import * as constants from "~/lib/config";
 import { getSplatoonToken } from "./getSplatoonToken";
 import { getSplatoonAccessToken } from "./getSplatoonAccessToken";
 
-export interface SuccessResponse {}
+export interface SuccessResponse {
+  iksmSession: string;
+}
 
 /**
  * Returns a new cookie provided the session_token.

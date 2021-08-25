@@ -20,11 +20,9 @@ type Props = {
 
 const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   const [text, setText] = useState(q ?? "");
-  const [sessionToken, setSessionToken] = useSessionStorage(
-    "session_token",
-    ""
-  );
-  const [iksmSession, setIksmSession] = useLocalStorage("iksm_session", "");
+  const [sessionToken, setSessionToken] =
+    useSessionStorage<string>("session_token");
+  const [iksmSession, setIksmSession] = useLocalStorage<string>("iksm_session");
 
   const [state, copyToClipboard] = useCopyToClipboard();
 
@@ -44,15 +42,11 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     const sessionResponse = await rowSessionResponse.json();
     const sessionToken = sessionResponse["session_token"];
 
-    Toast.hide();
-
     if (rowSessionResponse.ok) {
       setSessionToken(sessionToken);
     } else {
       Toast.fail(sessionToken.error);
     }
-
-    Toast.loading("解析中");
 
     const iksmOption: RequestInit = {
       method: "POST",
@@ -118,20 +112,22 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
             </button>
           </div> */}
 
-          <div className="stat w-full">
-            <div className="stat-title">iksm_session</div>
-            <div className="stat-value truncate">{iksmSession}</div>
-            <button
-              className="stat-figure btn btn-circle btn-outline"
-              onClick={() => copyToClipboard(iksmSession ?? "")}
-            >
-              {state.value === iksmSession ? (
-                <Icon icon="akar-icons:check" />
-              ) : (
-                <Icon icon="akar-icons:clipboard" />
-              )}
-            </button>
-          </div>
+          {iksmSession && (
+            <div className="stat w-full">
+              <div className="stat-title">iksm_session</div>
+              <div className="stat-value truncate">{iksmSession}</div>
+              <button
+                className="stat-figure btn btn-circle btn-outline"
+                onClick={() => copyToClipboard(iksmSession)}
+              >
+                {state.value === iksmSession ? (
+                  <Icon icon="akar-icons:check" />
+                ) : (
+                  <Icon icon="akar-icons:clipboard" />
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>

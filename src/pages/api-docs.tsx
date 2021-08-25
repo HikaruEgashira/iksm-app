@@ -3,6 +3,6 @@ import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
 const Swagger: NextPage = () => {
-  return <SwaggerUI url="/api/doc" />;
+  return <SwaggerUI url="/api/doc.json" />;
 };
 export default Swagger;
