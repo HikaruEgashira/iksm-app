@@ -2,39 +2,31 @@ import { v4 as uuid } from "uuid";
 
 import { getAccessToken } from "./getAccessToken";
 import { callFlapg } from "./callFlapg";
+import { getUserInfo } from "./getUserInfo";
+import { ErrorResponse } from "./types";
 
-const requestId = uuid();
-const timestamp = Math.floor(Date.now() / 1000).toString();
+export interface SuccessResponse {}
 
 export const getCookie = async (
   sessionToken: string,
   userLang: string
   //   userId: number
-) => {
-  const accessTokenResult = await getAccessToken(sessionToken);
-  const accessTokenJson = await accessTokenResult.json();
-  const {
-    access_token: accessToken,
-    id_token: idToken,
-  }: { access_token: string; id_token: string } = accessTokenJson;
+): Promise<ErrorResponse | SuccessResponse> => {
+  const accessTokenJson = await getAccessToken(sessionToken);
+  if ("error" in accessTokenJson) {
+    return accessTokenJson;
+  }
+  const { access_token: accessToken, id_token: idToken } = accessTokenJson;
 
-  console.log("/2.0.0/users/me");
-  const userInfoResponse = await fetch(
-    "https://api.accounts.nintendo.com/2.0.0/users/me",
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-  const userInfo = await userInfoResponse.json();
+  const userInfo = await getUserInfo(accessToken);
 
-  const { login_app, login_nso } = await callFlapg(
-    accessToken,
-    requestId,
-    timestamp
-  );
-  console.log(login_app, login_nso);
+  const requestId = uuid();
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const iid = "nso";
+  const flapg_nso = await callFlapg(accessToken, requestId, timestamp, iid);
+  if ("error" in flapg_nso) {
+    return flapg_nso;
+  }
 
   //   const headers = {
   //     Connection: "Keep-Alive",
@@ -64,7 +56,7 @@ export const getCookie = async (
   //   const splatoonToken = await splatoonTokenResponse.json();
   //   console.log(splatoonToken);
 
-  return userInfo;
+  return flapg_nso;
 
   //   console.log("/v2/Game/GetWebServiceToken", userId);
   //   const {

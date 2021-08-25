@@ -1,23 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getAccessToken } from "~/lib/getAccessToken";
+import { getAccessToken, SuccessResponse } from "~/lib/getAccessToken";
+import { ErrorResponse } from "~/lib/types";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<string>
+  res: NextApiResponse<ErrorResponse | SuccessResponse>
 ) {
-  if (req.method !== "POST") return res.status(405).send("Method Not Allowed");
+  if (req.method !== "POST")
+    return res.status(405).json({ error: "Method Not Allowed" });
 
   const body = JSON.parse(req.body);
   const sessionToken = body.sessionToken;
   if (!sessionToken) {
-    return res.status(400).send("sessionToken is required");
+    return res.status(400).json({ error: "sessionToken is required" });
   }
 
   const accessTokenResult = await getAccessToken(sessionToken);
-  const accessTokenJson = await accessTokenResult.json();
-  if (accessTokenJson.error) {
-    return res.status(400).json(accessTokenJson);
+  if ("error" in accessTokenResult) {
+    return res.status(400).json(accessTokenResult);
   }
 
-  res.json(accessTokenJson);
+  res.json(accessTokenResult);
 }

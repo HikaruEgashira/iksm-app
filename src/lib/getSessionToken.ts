@@ -1,5 +1,8 @@
 import Url from "url-parse";
 import * as constants from "./config";
+import { ErrorResponse } from "~/lib/types";
+
+export type SuccessResponse = { session_token: string };
 
 type Params = {
   client_id: string;
@@ -24,10 +27,10 @@ export const getSessionTokenParam = (
   };
 };
 
-export async function getSessionToken(
+export const getSessionToken = async (
   url: string,
   sessionTokenCodeVerifier: string
-) {
+): Promise<ErrorResponse | SuccessResponse> => {
   const apiUrl = constants.acountSessionTokenURI;
   const bodyJson = getSessionTokenParam(url, sessionTokenCodeVerifier);
   const body = JSON.stringify(bodyJson);
@@ -37,9 +40,12 @@ export async function getSessionToken(
     "X-ProductVersion": constants.userAgent,
     "User-Agent": constants.userAgent,
   };
-  return await fetch(apiUrl, {
+  const options = {
     method: "POST",
     body,
     headers,
-  });
-}
+  };
+  const sessoinResponse = await fetch(apiUrl, options);
+  const sessionJson = await sessoinResponse.json();
+  return sessionJson;
+};
