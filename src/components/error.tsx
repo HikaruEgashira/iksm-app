@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Footer } from "./footer";
 import { Nav } from "./nav";
 
 type Props = {
@@ -33,6 +32,5 @@ export const Error = ({ message }: Props) => (
         </div>
       </div>
     </main>
-    <Footer />
   </div>
 );

@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "ikamodoki";
+  src: url("./ikamodoki.ttf");
+}
+@font-face {
+  font-family: "inkling";
+  src: url("./Inkling_v2.otf");
+}
+@font-face {
+  font-family: "paintball";
+  src: url("./project_paintball.otf");
+}
+body {
+  font-family: "paintball" "ikamodoki" "inkling";
+}

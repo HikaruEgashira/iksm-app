@@ -52,6 +52,10 @@ const nextConfig = {
   images: {
     domains: ["www.google.com", "lh3.googleusercontent.com"],
   },
+
+  experimental: {
+    cpus: 4,
+  },
 };
 
 module.exports = nextConfig;

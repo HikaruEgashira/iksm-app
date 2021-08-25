@@ -1,7 +1,15 @@
-import { GetServerSideProps, GetStaticProps, NextPage } from "next";
+/* eslint-disable @next/next/no-css-tags */
+import { Icon } from "@iconify/react";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useState, ChangeEvent } from "react";
-import { useSessionStorage, useLocalStorage } from "react-use";
+import {
+  useSessionStorage,
+  useLocalStorage,
+  useCopyToClipboard,
+} from "react-use";
+import Toast from "light-toast";
+
 import { authorize } from "~/lib/authorize";
 
 type Props = {
@@ -12,9 +20,13 @@ type Props = {
 
 const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   const [text, setText] = useState(q ?? "");
-  const [sessionToken, setSessionToken] =
-    useSessionStorage<string>("session_token");
-  const [iksmSession, setIksmSession] = useLocalStorage<string>("iksm_session");
+  const [sessionToken, setSessionToken] = useSessionStorage(
+    "session_token",
+    ""
+  );
+  const [iksmSession, setIksmSession] = useLocalStorage("iksm_session", "");
+
+  const [state, copyToClipboard] = useCopyToClipboard();
 
   const onChangeInput = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
@@ -23,6 +35,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   };
 
   const submit = async (url: string) => {
+    Toast.loading("解析中");
     const sessionOptions: RequestInit = {
       method: "POST",
       body: JSON.stringify({ url, sessionTokenCodeVerifier }),
@@ -30,9 +43,16 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     const rowSessionResponse = await fetch(`api/sessionToken`, sessionOptions);
     const sessionResponse = await rowSessionResponse.json();
     const sessionToken = sessionResponse["session_token"];
+
+    Toast.hide();
+
     if (rowSessionResponse.ok) {
       setSessionToken(sessionToken);
+    } else {
+      Toast.fail(sessionToken.error);
     }
+
+    Toast.loading("解析中");
 
     const iksmOption: RequestInit = {
       method: "POST",
@@ -40,28 +60,35 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     };
     const rowIksmResponse = await fetch(`api/iksm`, iksmOption);
     const iksmResponse = await rowIksmResponse.json();
+
+    Toast.hide();
+
     if (rowIksmResponse.ok) {
       setIksmSession(iksmResponse["iksmSession"]);
+    } else {
+      Toast.fail(iksmResponse.error);
     }
   };
 
   return (
-    <div className="min-h-screen bg-base-200 flex flex-col">
+    <div data-theme="cyberpunk" className="min-h-screen bg-base-200 font-ika">
       <Head>
         <title>iksm app | Home</title>
         <meta name="description" content="perfect syllabus" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="px-4 py-10 text-center">
-        <div className="container grid gap-4 xs:w-full sm:w-xl lg:w-5xl mx-auto">
+      <main className="p-5 container mx-auto">
+        <div className="grid gap-4 mx-auto">
           <label className="label">
-            <span className="label-text">
-              右のページに行き、「この人にする」のリンクを下のフォームに貼り付ける
+            <span className="label-text text-2xl">
+              みぎのページにある、「このヒトにする」のリンクをイカ↓のフォームにはりつけろ
             </span>
-            <a href={url} target="_blank" rel="noreferrer">
-              url
-            </a>
+            <button className="btn font-inkling text-2xl">
+              <a href={url} target="_blank" rel="noreferrer">
+                click
+              </a>
+            </button>
           </label>
           <input
             className={`input input-bordered`}
@@ -74,20 +101,37 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
             disabled={text === ""}
             onClick={() => submit(text)}
           >
-            view
+            get iksm →
           </button>
-          <p
-            className="w-full overflow-hidden overflow-ellipsis"
-            key="sessionToken"
-          >
-            {sessionToken}
-          </p>
-          <p
-            className="w-full overflow-hidden overflow-ellipsis"
-            key="iksmSession"
-          >
-            {iksmSession}
-          </p>
+          {/* <div className="stat w-full">
+            <div className="stat-title">session_token</div>
+            <div className="stat-value truncate">{sessionToken}</div>
+            <button
+              className="stat-figure btn btn-circle btn-outline"
+              onClick={() => copyToClipboard(sessionToken)}
+            >
+              {state.value === sessionToken ? (
+                <Icon icon="akar-icons:check" />
+              ) : (
+                <Icon icon="akar-icons:clipboard" />
+              )}
+            </button>
+          </div> */}
+
+          <div className="stat w-full">
+            <div className="stat-title">iksm_session</div>
+            <div className="stat-value truncate">{iksmSession}</div>
+            <button
+              className="stat-figure btn btn-circle btn-outline"
+              onClick={() => copyToClipboard(iksmSession ?? "")}
+            >
+              {state.value === iksmSession ? (
+                <Icon icon="akar-icons:check" />
+              ) : (
+                <Icon icon="akar-icons:clipboard" />
+              )}
+            </button>
+          </div>
         </div>
       </main>
     </div>
