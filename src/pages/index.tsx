@@ -13,6 +13,7 @@ import Toast from "light-toast";
 import { Nav } from "~/components/nav";
 import { Footer } from "~/components/footer";
 import { authorize } from "~/lib/authorize";
+import * as constants from "~/lib/config";
 
 type Props = {
   q: string | null;
@@ -22,8 +23,7 @@ type Props = {
 
 const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   const [text, setText] = useState(q ?? "");
-  const [sessionToken, setSessionToken] =
-    useSessionStorage<string>("session_token");
+  const [, setSessionToken] = useSessionStorage<string>("session_token");
   const [iksmSession, setIksmSession] = useLocalStorage<string>("iksm_session");
 
   const [state, copyToClipboard] = useCopyToClipboard();
@@ -67,7 +67,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   };
 
   return (
-    <div
+    <main
       data-theme="cyberpunk"
       className="min-h-screen bg-base-200 font-ika flex flex-col"
     >
@@ -77,66 +77,81 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
 
       <Nav />
 
-      <main className="p-5 container mx-auto">
-        <div className="grid gap-4 mx-auto">
-          <label className="label">
-            <span className="label-text text-2xl">
-              みぎのページにある、「このヒトにする」のリンクをイカ↓のフォームにはりつけろ
-            </span>
-            <button className="btn font-inkling text-2xl">
-              <a href={url} target="_blank" rel="noreferrer">
-                click
-              </a>
-            </button>
-          </label>
-          <input
-            className={`input input-bordered`}
-            type="text"
-            value={text}
-            onChange={onChangeInput}
-          />
-          <button
-            className="btn btn-primary"
-            disabled={text === ""}
-            onClick={() => submit(text)}
-          >
-            get iksm →
+      <div className="p-5 container mx-auto grid gap-4">
+        <label className="label">
+          <span className="label-text text-2xl mr-2">
+            みぎのページにある、「このヒトにする」のリンクをイカ↓のフォームにはりつけろ！
+          </span>
+          <button className="btn btn-accent font-inkling text-2xl">
+            <a href={url} target="_blank" rel="noreferrer">
+              click
+            </a>
           </button>
-          {/* <div className="stat w-full">
-            <div className="stat-title">session_token</div>
-            <div className="stat-value truncate">{sessionToken}</div>
+        </label>
+        <input
+          className={`input input-bordered`}
+          type="text"
+          value={text}
+          onChange={onChangeInput}
+        />
+        <button
+          className="btn btn-primary"
+          disabled={text === ""}
+          onClick={() => submit(text)}
+        >
+          get iksm →
+        </button>
+
+        <div className="stat w-full">
+          <div className="stat-title">iksm_session</div>
+          <div className="stat-value truncate">{iksmSession}</div>
+          {iksmSession && (
             <button
               className="stat-figure btn btn-circle btn-outline"
-              onClick={() => copyToClipboard(sessionToken)}
+              onClick={() => copyToClipboard(iksmSession)}
             >
-              {state.value === sessionToken ? (
+              {state.value === iksmSession ? (
                 <Icon icon="akar-icons:check" />
               ) : (
                 <Icon icon="akar-icons:clipboard" />
               )}
             </button>
-          </div> */}
-
-          {iksmSession && (
-            <div className="stat w-full">
-              <div className="stat-title">iksm_session</div>
-              <div className="stat-value truncate">{iksmSession}</div>
-              <button
-                className="stat-figure btn btn-circle btn-outline"
-                onClick={() => copyToClipboard(iksmSession)}
-              >
-                {state.value === iksmSession ? (
-                  <Icon icon="akar-icons:check" />
-                ) : (
-                  <Icon icon="akar-icons:clipboard" />
-                )}
-              </button>
-            </div>
           )}
         </div>
-      </main>
+
+        <h2 className="text-2xl">how to use?</h2>
+        <div className="flex gap-4">
+          <button className="btn">
+            <a
+              href={constants.splatnetUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              access splanet
+            </a>
+          </button>
+          <button className="btn">
+            <a
+              href="https://splatool.net/analytics/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              analytics
+            </a>
+          </button>
+          <button className="btn">
+            <a
+              href="https://splatool.net/records/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              records
+            </a>
+          </button>
+        </div>
+      </div>
       <Footer className="mt-auto" />
-    </div>
+    </main>
   );
 };
 
