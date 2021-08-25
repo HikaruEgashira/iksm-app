@@ -40,7 +40,7 @@ export const getSessionToken = async (
     "X-ProductVersion": constants.userAgent,
     "User-Agent": constants.userAgent,
   };
-  const options = {
+  const options: RequestInit = {
     method: "POST",
     body,
     headers,

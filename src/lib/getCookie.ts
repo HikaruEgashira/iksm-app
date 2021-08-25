@@ -4,110 +4,81 @@ import { getAccessToken } from "./getAccessToken";
 import { callFlapg } from "./callFlapg";
 import { getUserInfo } from "./getUserInfo";
 import { ErrorResponse } from "./types";
+import * as constants from "~/lib/config";
+import { getSplatoonToken } from "./getSplatoonToken";
+import { getSplatoonAccessToken } from "./getSplatoonAccessToken";
 
 export interface SuccessResponse {}
 
+/**
+ * Returns a new cookie provided the session_token.
+ */
 export const getCookie = async (
   sessionToken: string,
   userLang: string
   //   userId: number
 ): Promise<ErrorResponse | SuccessResponse> => {
-  const accessTokenJson = await getAccessToken(sessionToken);
-  if ("error" in accessTokenJson) {
-    return accessTokenJson;
+  const idResponse = await getAccessToken(sessionToken);
+  if ("error" in idResponse) {
+    return idResponse;
   }
-  const { access_token: accessToken, id_token: idToken } = accessTokenJson;
+  const accessToken = idResponse.accessToken;
 
   const userInfo = await getUserInfo(accessToken);
-
-  const requestId = uuid();
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  const iid = "nso";
-  const flapg_nso = await callFlapg(accessToken, requestId, timestamp, iid);
-  if ("error" in flapg_nso) {
-    return flapg_nso;
+  if ("error" in userInfo) {
+    return userInfo;
   }
 
-  //   const headers = {
-  //     Connection: "Keep-Alive",
-  //     "Accept-Encoding": "gzip",
-  //     "User-Agent": "com.nintendo.znca/1.5.2 (Android/7.1.2)",
-  //     "Accept-Language": userLang,
-  //     Authorization: "Bearer",
-  //     "X-Platform": "Android",
-  //     "X-ProductVersion": "1.5.2",
-  //   };
-  //   console.log("/v1/Account/Login");
-  //   const qs = new URLSearchParams({
-  //     f: login_nso.f,
-  //     naIdToken: idToken,
-  //     timestamp: timestamp,
-  //     requestId: requestId,
-  //     naCountry: userInfo.country,
-  //     naBirthday: userInfo.birthday,
-  //     language: userInfo.language,
-  //   });
-  //   const splatoonTokenResponse = await fetch(
-  //     `https://api-lp1.znc.srv.nintendo.net/v1/Account/Login?${qs}`,
-  //     {
-  //       headers,
-  //     }
-  //   );
-  //   const splatoonToken = await splatoonTokenResponse.json();
-  //   console.log(splatoonToken);
+  const guid = uuid();
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const iid = "nso";
+  const flapgNso = await callFlapg(accessToken, guid, timestamp, iid);
+  if ("error" in flapgNso) {
+    return flapgNso;
+  }
 
-  return flapg_nso;
+  const splatoonToken = await getSplatoonToken(userLang, userInfo, flapgNso);
+  if ("error" in splatoonToken) {
+    return splatoonToken;
+  }
 
-  //   console.log("/v2/Game/GetWebServiceToken", userId);
-  //   const {
-  //     data: {
-  //       result: { accessToken: splatoonAccessToken },
-  //     },
-  //   } = await fetch(
-  //     `https://api-lp1.znc.srv.nintendo.net/v2/Game/GetWebServiceToken`,
-  //     {
-  //       parameter: {
-  //         id: 5741031244955648,
-  //         f: login_app.f,
-  //         registrationToken: login_app.p1,
-  //         timestamp: login_app.p2,
-  //         requestId: login_app.p3,
-  //       },
-  //       headers: {
-  //         Authorization: `Bearer ${splatoonToken}`,
-  //       },
-  //     }
-  //   );
+  const idToken = splatoonToken.result.webApiServerCredential.accessToken;
+  const flapgApp = await callFlapg(idToken, guid, timestamp, "app");
+  if ("error" in flapgApp) {
+    return flapgApp;
+  }
 
-  //   console.log("app.splatoon2.nintendo.net", userId);
-  //   const r = await axios.get(
-  //     `https://app.splatoon2.nintendo.net/?lang=${userLang}`,
-  //     {
-  //       headers: {
-  //         "X-IsAppAnalyticsOptedIn": "false",
-  //         Accept:
-  //           "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-  //         "Accept-Encoding": "gzip,deflate",
-  //         "X-GameWebToken": splatoonAccessToken,
-  //         "Accept-Language": userLang,
-  //         "X-IsAnalyticsOptedIn": "false",
-  //         "User-Agent":
-  //           "Mozilla/5.0 (Linux; Android 7.1.2; Pixel Build/NJH47D; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/59.0.3071.125 Mobile Safari/537.36",
-  //         "X-Requested-With": "com.nintendo.znca",
-  //       },
-  //     }
-  //   );
-  //   const re = /iksm_session=([a-f0-9]+);/;
-  //   let iksmSession: string = "";
-  //   for (const h of r.headers["set-cookie"] as string[]) {
-  //     if (re.test(h)) {
-  //       const rr = re.exec(h);
-  //       if (!rr) throw new Error("解析Cookie出错");
-  //       iksmSession = rr[1];
-  //     }
-  //   }
-  //   if (!iksmSession) {
-  //     throw new Error("获取Cookie失败");
-  //   }
-  //   return iksmSession;
+  const splatoonAccessToken = await getSplatoonAccessToken(idToken, flapgApp);
+  if ("error" in splatoonAccessToken) {
+    return splatoonAccessToken;
+  }
+
+  const options: RequestInit = {
+    headers: {
+      Host: "app.splatoon2.nintendo.net",
+      "X-IsAppAnalyticsOptedIn": "false",
+      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "Accept-Encoding": "gzip,deflate",
+      "X-GameWebToken": splatoonAccessToken.result.accessToken,
+      "Accept-Language": userLang,
+      "X-IsAnalyticsOptedIn": "false",
+      Connection: "keep-alive",
+      DNT: "0",
+      "User-Agent":
+        "Mozilla/5.0 (Linux; Android 7.1.2; Pixel Build/NJH47D; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/59.0.3071.125 Mobile Safari/537.36",
+      "X-Requested-With": "com.nintendo.znca",
+    },
+  };
+  const rowIksmResponse = await fetch(
+    `${constants.splatnetUrl}/?lang=${userLang}`,
+    options
+  );
+
+  const re = /iksm_session=([a-f0-9]+);/;
+  const iksmSession = re.exec(rowIksmResponse.headers.get("set-cookie") ?? "");
+  if (!iksmSession) {
+    return { error: "cannot find iksm_session" };
+  }
+
+  return { iksmSession: iksmSession[1] };
 };

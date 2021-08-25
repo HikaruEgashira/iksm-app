@@ -1,12 +1,12 @@
 import * as constants from "~/lib/config";
 import { ErrorResponse } from "./types";
 
-export type SuccessResponse = { access_token: string; id_token: string };
+export type SuccessResponse = { accessToken: string; idToken: string };
 
 export const getAccessToken = async (
   sessionToken: string
 ): Promise<ErrorResponse | SuccessResponse> => {
-  const options = {
+  const options: RequestInit = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +23,11 @@ export const getAccessToken = async (
       grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer-session-token",
     }),
   };
-  const accessResponse = await fetch(constants.acountAccessTokenURI, options);
-  const accessJson = await accessResponse.json();
-  return accessJson;
+  const rowAccessResponse = await fetch(
+    constants.acountAccessTokenURI,
+    options
+  );
+  const { access_token: accessToken, id_token: idToken } =
+    await rowAccessResponse.json();
+  return { accessToken, idToken };
 };

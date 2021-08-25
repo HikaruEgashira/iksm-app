@@ -1,13 +1,17 @@
 import * as constants from "~/lib/config";
 import { ErrorResponse } from "./types";
 
-type SuccessResponse = any;
+export interface SuccessResponse {
+  country: string;
+  birthday: string;
+  language: string;
+}
 
 export const getUserInfo = async (
   accessToken: string
 ): Promise<ErrorResponse | SuccessResponse> => {
   const url = constants.acountMeURI;
-  const options = {
+  const options: RequestInit = {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

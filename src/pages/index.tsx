@@ -14,7 +14,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   const [text, setText] = useState(q ?? "");
   const [sessionToken, setSessionToken] =
     useSessionStorage<string>("session_token");
-  const [accessToken, setAccessToken] = useLocalStorage<string>("access_token");
+  const [iksmSession, setIksmSession] = useLocalStorage<string>("iksm_session");
 
   const onChangeInput = (evt: ChangeEvent<HTMLInputElement>) => {
     const value = evt.target.value;
@@ -23,29 +23,26 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   };
 
   const submit = async (url: string) => {
-    const sessionTokenBody = JSON.stringify({ url, sessionTokenCodeVerifier });
-    const sessionTokenResponse = await fetch(`api/sessionToken`, {
+    const sessionOptions: RequestInit = {
       method: "POST",
-      body: sessionTokenBody,
-    });
-    const sessionTokenJson = await sessionTokenResponse.json();
-    const sessionToken = sessionTokenJson["session_token"];
-    setSessionToken(sessionToken);
+      body: JSON.stringify({ url, sessionTokenCodeVerifier }),
+    };
+    const rowSessionResponse = await fetch(`api/sessionToken`, sessionOptions);
+    const sessionResponse = await rowSessionResponse.json();
+    const sessionToken = sessionResponse["session_token"];
+    if (rowSessionResponse.ok) {
+      setSessionToken(sessionToken);
+    }
 
-    const iksmBody = JSON.stringify({ sessionToken });
-    const iksmResponse = await fetch(`api/iksm`, {
+    const iksmOption: RequestInit = {
       method: "POST",
-      body: iksmBody,
-    });
-    const iksmJson = await iksmResponse.json();
-    console.log(iksmJson);
-
-    // const accessTokenResponse = await fetch(`api/accessToken`, {
-    //   method: "POST",
-    //   body: accessTokenBody,
-    // });
-    // const accessTokenJson = await accessTokenResponse.json();
-    // setAccessToken(accessTokenJson["access_token"]);
+      body: JSON.stringify({ sessionToken }),
+    };
+    const rowIksmResponse = await fetch(`api/iksm`, iksmOption);
+    const iksmResponse = await rowIksmResponse.json();
+    if (rowIksmResponse.ok) {
+      setIksmSession(iksmResponse["iksmSession"]);
+    }
   };
 
   return (
@@ -87,9 +84,9 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
           </p>
           <p
             className="w-full overflow-hidden overflow-ellipsis"
-            key="accessToken"
+            key="iksmSession"
           >
-            {accessToken}
+            {iksmSession}
           </p>
         </div>
       </main>

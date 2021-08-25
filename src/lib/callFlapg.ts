@@ -1,10 +1,9 @@
 import { userAgent } from "~/lib/config";
 import { ErrorResponse } from "./types";
 
-interface SuccessResponse {
-  login_nso: { f: string };
-  login_app: { f: string; p1: string; p2: string; p3: string };
-}
+export type SuccessResponse = {
+  result: { f: string; p1: string; p2: string; p3: string };
+};
 
 const getHash = async (
   idToken: string,
@@ -26,6 +25,9 @@ const getHash = async (
   return hashJson;
 };
 
+/**
+ * Passes in headers to the flapg API (Android emulator) and fetches the response.
+ */
 export const callFlapg = async (
   idToken: string,
   guid: string,
@@ -45,7 +47,7 @@ export const callFlapg = async (
       "x-time": timestamp,
       "x-guid": guid,
       "x-hash": hashJson.hash,
-      "x-ver": "2",
+      "x-ver": "3",
       "x-iid": iid,
     },
   });
