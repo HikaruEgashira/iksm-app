@@ -16,7 +16,9 @@ export const Footer = ({ className }: Props) => (
     </div>
     <div>
       <span className="footer-title">このサービスについて</span>
-      <a className="link link-hover">つかいかた</a>
+      <a className="link link-hover" href="https://egahika.dev/iksm-chan">
+        つかいかた
+      </a>
     </div>
     <div>
       <span className="footer-title">せいしゃくしゃ</span>
@@ -26,8 +28,6 @@ export const Footer = ({ className }: Props) => (
       <a
         className="link link-hover"
         href="https://hikaetech.vercel.app/5a8bcf01cbf34e55a9b2d388d1f9c638"
-        target="_blank"
-        rel="noreferrer"
       >
         Contact
       </a>

@@ -17,6 +17,11 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta
+            name="description"
+            content="generate iksm_session in browser."
+          />
+          <link rel="icon" href="/favicon.ico" />
           <link rel="stylesheet" href="fonts/fonts.css" />
         </Head>
         <body>

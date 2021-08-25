@@ -73,8 +73,6 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     >
       <Head>
         <title>iksm-chan</title>
-        <meta name="description" content="perfect syllabus" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Nav />
