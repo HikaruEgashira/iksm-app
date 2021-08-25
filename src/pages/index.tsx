@@ -10,6 +10,8 @@ import {
 } from "react-use";
 import Toast from "light-toast";
 
+import { Nav } from "~/components/nav";
+import { Footer } from "~/components/footer";
 import { authorize } from "~/lib/authorize";
 
 type Props = {
@@ -65,12 +67,17 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   };
 
   return (
-    <div data-theme="cyberpunk" className="min-h-screen bg-base-200 font-ika">
+    <div
+      data-theme="cyberpunk"
+      className="min-h-screen bg-base-200 font-ika flex flex-col"
+    >
       <Head>
-        <title>iksm app | Home</title>
+        <title>iksm-chan</title>
         <meta name="description" content="perfect syllabus" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Nav />
 
       <main className="p-5 container mx-auto">
         <div className="grid gap-4 mx-auto">
@@ -130,6 +137,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
           )}
         </div>
       </main>
+      <Footer className="mt-auto" />
     </div>
   );
 };

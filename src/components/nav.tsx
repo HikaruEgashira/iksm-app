@@ -1,15 +1,34 @@
-interface Props {
-  title: string;
-  left?: React.ReactNode;
-  right?: React.ReactNode;
-}
+import { Icon } from "@iconify/react";
 
-export const Nav = ({ title, right, left }: Props) => (
-  <>
-    <div className="my-10 mx-auto max-w-5xl flex place-items-center">
-      {left}
-      <h1 className="text-lg font-extrabold">{title}</h1>
-      {right}
+type Props = {
+  className?: string;
+};
+
+export const Nav = ({ className }: Props) => (
+  <div
+    className={`navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box ${className}`}
+  >
+    <div className="flex-1 px-2 mx-2">
+      <span className="text-lg font-bold font-inkling text-3xl">
+        iksm-chan.
+      </span>
     </div>
-  </>
+    <div className="flex-none px-2 mx-2">
+      <div className="flex items-stretch">
+        <a className="btn btn-ghost btn-sm text-2xl" href="api-docs">
+          <Icon icon="heroicons-solid:document-text" />
+          <span className="hidden">API docs</span>
+        </a>
+        <a
+          className="btn btn-ghost btn-sm text-2xl"
+          href="https://github.com/HikaruEgashira/iksm-app"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Icon icon="el:github" />
+          <span className="hidden">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </div>
 );

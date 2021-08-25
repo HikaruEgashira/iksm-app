@@ -16,7 +16,7 @@
     "critters": "^0.0.10",
     "crypto": "^1.0.1",
     "daisy-theme-nord": "^1.8.0",
-    "daisyui": "^1.12.0",
+    "daisyui": "^1.13.2",
     "dayjs": "^1.10.6",
     "ky": "^0.28.5",
     "ky-universal": "^0.9.1",

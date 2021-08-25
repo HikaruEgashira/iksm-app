@@ -1123,10 +1123,10 @@ daisy-theme-nord@^1.8.0:
   resolved "https://registry.yarnpkg.com/daisy-theme-nord/-/daisy-theme-nord-1.8.0.tgz#f5d0c1a7e80fa534282c6fb86973a7236558a08b"
   integrity sha512-CN56hrU5+rCLySKdtuQhyNsnn3EvqClz5NRBFdEAzEwPzSH+VtT6kvmEo6JHP8j++YxsaIp+SM63V5Jso2Q+tw==
 
-daisyui@^1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-1.12.0.tgz#cd270d2a7348ff42980b7d51e4be27744ab00bdf"
-  integrity sha512-Rtt4GbcA3Z81T9TipM6UkqGwxS9v7vOEI9Fyr0+CdJmTsvrDqdYgh4Z8Uhgftt3F0Eqrq1HljnFUK/FPk46gkg==
+daisyui@^1.13.2:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-1.13.2.tgz#61daeba7448d2c1a8a9ca1396d5f3126f092a4d4"
+  integrity sha512-aG+2NiyMIBRxgm5KDB93gbA6DWbjnqxkQ/+H1nUaVc7pesThRtpf4AjJED6FI6h2603FF70+N9akbq6lUvV+Gg==
 
 damerau-levenshtein@^1.0.6:
   version "1.0.7"
