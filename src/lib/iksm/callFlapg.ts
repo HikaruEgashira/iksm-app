@@ -1,5 +1,5 @@
-import { userAgent } from "~/lib/config";
-import { ErrorResponse } from "./types";
+import { userAgent } from "../config";
+import { ErrorResponse } from "../types";
 
 export type SuccessResponse = {
   result: { f: string; p1: string; p2: string; p3: string };

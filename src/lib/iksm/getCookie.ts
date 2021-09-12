@@ -3,10 +3,10 @@ import { v4 as uuid } from "uuid";
 import { getAccessToken } from "./getAccessToken";
 import { callFlapg } from "./callFlapg";
 import { getUserInfo } from "./getUserInfo";
-import { ErrorResponse } from "./types";
-import * as constants from "~/lib/config";
+import { ErrorResponse } from "../types";
 import { getSplatoonToken } from "./getSplatoonToken";
 import { getSplatoonAccessToken } from "./getSplatoonAccessToken";
+import * as constants from "../config";
 
 export interface SuccessResponse {
   iksmSession: string;

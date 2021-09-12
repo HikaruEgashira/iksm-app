@@ -1,7 +1,7 @@
-import * as constants from "~/lib/config";
-import { SuccessResponse as UserInfo } from "~/lib/getUserInfo";
-import { SuccessResponse as FlapgNso } from "~/lib/callFlapg";
-import { ErrorResponse } from "./types";
+import * as constants from "../config";
+import { SuccessResponse as UserInfo } from "./getUserInfo";
+import { SuccessResponse as FlapgNso } from "./callFlapg";
+import { ErrorResponse } from "../types";
 
 export interface SuccessResponse {
   result: {

@@ -1,6 +1,6 @@
-import * as constants from "~/lib/config";
-import { SuccessResponse as FlapgApp } from "~/lib/callFlapg";
-import { ErrorResponse } from "./types";
+import * as constants from "../config";
+import { SuccessResponse as FlapgApp } from "./callFlapg";
+import { ErrorResponse } from "../types";
 
 interface SuccessResponse {
   result: {

@@ -1,6 +1,6 @@
 import Url from "url-parse";
-import * as constants from "./config";
-import { ErrorResponse } from "~/lib/types";
+import * as constants from "../config";
+import { ErrorResponse } from "../types";
 
 export type SuccessResponse = { session_token: string };
 

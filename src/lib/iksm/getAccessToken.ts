@@ -1,5 +1,5 @@
-import * as constants from "~/lib/config";
-import { ErrorResponse } from "./types";
+import * as constants from "../config";
+import { ErrorResponse } from "../types";
 
 export type SuccessResponse = { accessToken: string; idToken: string };
 

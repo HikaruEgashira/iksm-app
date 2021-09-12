@@ -1,4 +1,4 @@
-import { clientId, redirectURL, scope } from "./config";
+import { clientId, redirectURL, scope } from "../config";
 import * as crypto from "crypto";
 import base64url from "base64url";
 

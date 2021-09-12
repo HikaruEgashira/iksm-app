@@ -12,8 +12,9 @@ import Toast from "light-toast";
 
 import { Nav } from "~/components/nav";
 import { Footer } from "~/components/footer";
-import { authorize } from "~/lib/authorize";
+import { authorize } from "~/lib/iksm/authorize";
 import * as constants from "~/lib/config";
+import { SuccessResponse as Records } from "~/lib/splatoon/getRecords";
 
 type Props = {
   q: string | null;
@@ -64,6 +65,18 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     } else {
       Toast.fail(iksmResponse.error);
     }
+  };
+
+  const records = async () => {
+    if (!iksmSession) {
+      Toast.fail("セッショントークンがありません");
+      return;
+    }
+    const rowRecords = await fetch(
+      `/api/splatoon/records?iksm_session=${iksmSession}`
+    );
+    const records: Records = await rowRecords.json();
+    console.log(records);
   };
 
   return (
@@ -148,6 +161,11 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
               records
             </a>
           </button>
+          {iksmSession && (
+            <button className="btn" onClick={() => records()}>
+              call records
+            </button>
+          )}
         </div>
       </div>
       <Footer className="mt-auto" />

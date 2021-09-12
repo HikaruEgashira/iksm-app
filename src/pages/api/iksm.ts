@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getCookie, SuccessResponse } from "~/lib/getCookie";
+import { getCookie, SuccessResponse } from "~/lib/iksm/getCookie";
 import { jsonParse } from "~/lib/jsonParse";
 import { ErrorResponse } from "~/lib/types";
 

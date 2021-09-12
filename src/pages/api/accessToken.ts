@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getAccessToken, SuccessResponse } from "~/lib/getAccessToken";
+import { getAccessToken, SuccessResponse } from "~/lib/iksm/getAccessToken";
 import { jsonParse } from "~/lib/jsonParse";
 import { ErrorResponse } from "~/lib/types";
 
