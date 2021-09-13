@@ -3,11 +3,7 @@ import { Icon } from "@iconify/react";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useState, ChangeEvent } from "react";
-import {
-  useSessionStorage,
-  useLocalStorage,
-  useCopyToClipboard,
-} from "react-use";
+import { useLocalStorage, useCopyToClipboard } from "react-use";
 import Toast from "light-toast";
 
 import { Nav } from "~/components/nav";
@@ -25,7 +21,8 @@ type Props = {
 
 const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   const [text, setText] = useState(q ?? "");
-  const [, setSessionToken] = useSessionStorage<string>("session_token");
+  const [sessionToken, setSessionToken] =
+    useLocalStorage<string>("session_token");
   const [iksmSession, setIksmSession] = useLocalStorage<string>("iksm_session");
 
   const [state, copyToClipboard] = useCopyToClipboard();
@@ -66,6 +63,25 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     } else {
       Toast.fail(iksmResponse.error);
     }
+  };
+
+  const renew = async () => {
+    Toast.loading("セッションを更新中");
+    const iksmOption: RequestInit = {
+      method: "POST",
+      body: JSON.stringify({ sessionToken }),
+    };
+    const rowIksmResponse = await fetch(`api/iksm`, iksmOption);
+    const iksmResponse = await rowIksmResponse.json();
+
+    Toast.hide();
+
+    if (rowIksmResponse.ok) {
+      setIksmSession(iksmResponse["iksmSession"]);
+    } else {
+      Toast.fail(iksmResponse.error);
+    }
+    Toast.hide();
   };
 
   const records = async () => {
@@ -120,7 +136,17 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
         </button>
 
         <div className="stat w-full">
-          <div className="stat-title">iksm_session</div>
+          <div className="stat-title">
+            iksm_session
+            {sessionToken && (
+              <button
+                className="btn btn-primary btn-xs btn-outline ml-4"
+                onClick={renew}
+              >
+                renew
+              </button>
+            )}
+          </div>
           <div className="stat-value truncate">{iksmSession}</div>
           {iksmSession && (
             <button
