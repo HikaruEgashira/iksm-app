@@ -1,15 +1,15 @@
+import type { GetServerSideProps, NextPage } from "next";
+import type { SuccessResponse as Records } from "~/lib/splatoon/getRecords";
+import type { Results } from "@splatoon-stats/types";
 import { Icon } from "@iconify/react";
-import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useState, ChangeEvent } from "react";
 import { useLocalStorage, useCopyToClipboard } from "react-use";
-import Toast from "light-toast";
+import toast from "light-toast";
 import { Nav } from "~/components/nav";
 import { Footer } from "~/components/footer";
 import { authorize } from "~/lib/iksm/authorize";
 import * as constants from "~/lib/config";
-import { SuccessResponse as Records } from "~/lib/splatoon/getRecords";
-import { Results } from "@splatoon-stats/types";
 
 type Props = {
   q: string | null;
@@ -32,7 +32,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   };
 
   const submit = async (url: string) => {
-    Toast.loading("解析中");
+    toast.loading("解析中");
     const sessionOptions: RequestInit = {
       method: "POST",
       body: JSON.stringify({ url, sessionTokenCodeVerifier }),
@@ -44,7 +44,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     if (rowSessionResponse.ok) {
       setSessionToken(sessionToken);
     } else {
-      Toast.fail(sessionToken.error);
+      toast.fail(sessionToken.error);
     }
 
     const iksmOption: RequestInit = {
@@ -53,33 +53,30 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     };
     const rowIksmResponse = await fetch(`api/iksm`, iksmOption);
     const iksmResponse = await rowIksmResponse.json();
-
-    Toast.hide();
+    toast.hide();
 
     if (rowIksmResponse.ok) {
       setIksmSession(iksmResponse["iksmSession"]);
     } else {
-      Toast.fail(iksmResponse.error);
+      toast.fail(iksmResponse.error);
     }
   };
 
   const renew = async () => {
-    Toast.loading("セッションを更新中");
+    toast.loading("セッションを更新中");
     const iksmOption: RequestInit = {
       method: "POST",
       body: JSON.stringify({ sessionToken }),
     };
     const rowIksmResponse = await fetch(`api/iksm`, iksmOption);
     const iksmResponse = await rowIksmResponse.json();
-
-    Toast.hide();
+    toast.hide();
 
     if (rowIksmResponse.ok) {
       setIksmSession(iksmResponse["iksmSession"]);
     } else {
-      Toast.fail(iksmResponse.error);
+      toast.fail(iksmResponse.error);
     }
-    Toast.hide();
   };
 
   const records = async () => {
@@ -88,7 +85,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     );
     const records: Records = await rowRecords.json();
     console.log(records);
-    Toast.success("ok!");
+    toast.success("ok!");
   };
   const results = async () => {
     const rowResults = await fetch(
@@ -96,7 +93,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     );
     const results: Results = await rowResults.json();
     console.log(results);
-    Toast.success("ok!");
+    toast.success("ok!");
   };
 
   return (
