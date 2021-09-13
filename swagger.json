@@ -91,48 +91,6 @@
           }
         }
       }
-    },
-    "/api/accessToken": {
-      "post": {
-        "parameters": [
-          {
-            "name": "sessionToken",
-            "description": "`/api/sessionToken`でゲットできる",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "accessToken",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "accessToken": {
-                  "type": "string"
-                },
-                "idToken": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "任天堂APIが返した何かしらのエラー",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   }
 }
