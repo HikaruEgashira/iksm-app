@@ -90,6 +90,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     );
     const records: Records = await rowRecords.json();
     console.log(records);
+    Toast.success("ok!");
   };
   const results = async () => {
     const rowResults = await fetch(
@@ -97,6 +98,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     );
     const results: Results = await rowResults.json();
     console.log(results);
+    Toast.success("ok!");
   };
 
   return (
