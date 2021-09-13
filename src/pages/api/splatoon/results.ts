@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getRecords, SuccessResponse } from "~/lib/splatoon/getRecords";
+import { getResults, SuccessResponse } from "~/lib/splatoon/getResults";
 import { ErrorResponse } from "~/lib/types";
 
 export default async function handler(
@@ -14,7 +14,7 @@ export default async function handler(
     return res.status(400).json({ error: "iksmSession is required" });
   }
 
-  const records = await getRecords(iksmSession);
+  const records = await getResults(iksmSession);
   if ("error" in records) {
     return res.status(400).json(records);
   }

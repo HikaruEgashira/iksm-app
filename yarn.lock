@@ -245,6 +245,11 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.0.6.tgz#023d72a5c4531b4ce204528971700a78a85a0c50"
   integrity sha512-Myxw//kzromB9yWgS8qYGuGVf91oBUUJpNvy5eM50sqvmKLbKjwLxohJnkWGTeeI9v9IBMtPLxz5Gc60FIfvCA==
 
+"@splatoon-stats/types@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@splatoon-stats/types/-/types-1.0.2.tgz#e2b9e8d4ec0250626666e3b4dc65ec382602dbeb"
+  integrity sha512-fYWvmlFwJXn/M66iOMjR/tMS65yGoQFkDP/0TeE8l3QKMJgAux/q7MTALOVCRkxLOVfm/PHJ2LN0jnEhvVLd+g==
+
 "@tailwindcss/typography@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@tailwindcss/typography/-/typography-0.4.1.tgz#51ddbceea6a0ee9902c649dbe58871c81a831212"

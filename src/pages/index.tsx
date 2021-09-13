@@ -15,6 +15,7 @@ import { Footer } from "~/components/footer";
 import { authorize } from "~/lib/iksm/authorize";
 import * as constants from "~/lib/config";
 import { SuccessResponse as Records } from "~/lib/splatoon/getRecords";
+import { Results } from "@splatoon-stats/types";
 
 type Props = {
   q: string | null;
@@ -68,15 +69,18 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
   };
 
   const records = async () => {
-    if (!iksmSession) {
-      Toast.fail("セッショントークンがありません");
-      return;
-    }
     const rowRecords = await fetch(
       `/api/splatoon/records?iksm_session=${iksmSession}`
     );
     const records: Records = await rowRecords.json();
     console.log(records);
+  };
+  const results = async () => {
+    const rowResults = await fetch(
+      `/api/splatoon/results?iksm_session=${iksmSession}`
+    );
+    const results: Results = await rowResults.json();
+    console.log(results);
   };
 
   return (
@@ -161,12 +165,20 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
               records
             </a>
           </button>
-          {iksmSession && (
-            <button className="btn" onClick={() => records()}>
-              call records
-            </button>
-          )}
         </div>
+        {iksmSession && (
+          <>
+            <h2 className="text-2xl">console</h2>
+            <div className="flex gap-4">
+              <button className="btn" onClick={records}>
+                call records
+              </button>
+              <button className="btn" onClick={results}>
+                call results
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <Footer className="mt-auto" />
     </main>
