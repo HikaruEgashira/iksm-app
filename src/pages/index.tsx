@@ -1,11 +1,9 @@
-/* eslint-disable @next/next/no-css-tags */
 import { Icon } from "@iconify/react";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useState, ChangeEvent } from "react";
 import { useLocalStorage, useCopyToClipboard } from "react-use";
 import Toast from "light-toast";
-
 import { Nav } from "~/components/nav";
 import { Footer } from "~/components/footer";
 import { authorize } from "~/lib/iksm/authorize";

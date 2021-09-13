@@ -19,7 +19,7 @@ class MyDocument extends Document {
         <Head>
           <meta
             name="description"
-            content="generate iksm_session in browser."
+            content="iksm_sessionジェネレーター。SplanetをPCから見られます。iksm_session generation online."
           />
           <link rel="icon" href="/favicon.ico" />
           <link rel="stylesheet" href="fonts/fonts.css" />
