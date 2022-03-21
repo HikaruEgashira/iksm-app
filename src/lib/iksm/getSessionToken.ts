@@ -1,5 +1,6 @@
 import Url from "url-parse";
 import * as constants from "../config";
+import { getNsoappVersion } from "../nsoapp";
 import { ErrorResponse } from "../types";
 
 export type SuccessResponse = { session_token: string };
@@ -31,14 +32,17 @@ export const getSessionToken = async (
   url: string,
   sessionTokenCodeVerifier: string
 ): Promise<ErrorResponse | SuccessResponse> => {
+  const nsoappVersion = await getNsoappVersion();
+  const userAgent = `iksm/${nsoappVersion} iksm-chan Android`;
+
   const apiUrl = constants.acountSessionTokenURI;
   const bodyJson = getSessionTokenParam(url, sessionTokenCodeVerifier);
   const body = JSON.stringify(bodyJson);
   const headers = {
     "Content-Type": "application/json",
     "X-Platform": "Android",
-    "X-ProductVersion": constants.userAgent,
-    "User-Agent": constants.userAgent,
+    "X-ProductVersion": userAgent,
+    "User-Agent": userAgent,
   };
   const options: RequestInit = {
     method: "POST",

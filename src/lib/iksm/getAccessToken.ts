@@ -1,4 +1,5 @@
 import * as constants from "../config";
+import { getNsoappVersion } from "../nsoapp";
 import { ErrorResponse } from "../types";
 
 export type SuccessResponse = { accessToken: string; idToken: string };
@@ -6,13 +7,16 @@ export type SuccessResponse = { accessToken: string; idToken: string };
 export const getAccessToken = async (
   sessionToken: string
 ): Promise<ErrorResponse | SuccessResponse> => {
+  const nsoappVersion = await getNsoappVersion();
+  const userAgent = `iksm/${nsoappVersion} iksm-chan`;
+
   const options: RequestInit = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "X-Platform": "Android",
-      "X-ProductVersion": constants.userAgent,
-      "User-Agent": constants.userAgent,
+      "X-ProductVersion": userAgent,
+      "User-Agent": userAgent,
       "Content-Length": "439",
       Accept: "application/json",
       Connecton: "Keep-Alive",

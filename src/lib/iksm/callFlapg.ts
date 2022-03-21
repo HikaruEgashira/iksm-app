@@ -1,4 +1,4 @@
-import { userAgent } from "../config";
+import { getNsoappVersion } from "../nsoapp";
 import { ErrorResponse } from "../types";
 
 export type SuccessResponse = {
@@ -10,6 +10,9 @@ const getHash = async (
   timestamp: string
 ): Promise<ErrorResponse | { hash: string }> => {
   const apiUrl = `https://elifessler.com/s2s/api/gen2`;
+
+  const nsoappVersion = await getNsoappVersion();
+  const userAgent = `iksm/${nsoappVersion} iksm-chan Android`;
   const hashResponse = await fetch(apiUrl, {
     method: "POST",
     headers: {
@@ -39,6 +42,9 @@ export const callFlapg = async (
   if ("error" in hashJson) {
     return hashJson;
   }
+
+  const nsoappVersion = await getNsoappVersion();
+  const userAgent = `iksm/${nsoappVersion} iksm-chan Android`;
 
   const flapgResponse = await fetch(apiUrl, {
     headers: {

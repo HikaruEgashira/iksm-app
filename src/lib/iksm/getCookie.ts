@@ -43,6 +43,13 @@ export const getCookie = async (
   if ("error" in splatoonToken) {
     return splatoonToken;
   }
+  console.log(splatoonToken);
+
+  if (!splatoonToken.result) {
+    return {
+      error: JSON.stringify(splatoonToken.result),
+    };
+  }
 
   const idToken = splatoonToken.result.webApiServerCredential.accessToken;
   const flapgApp = await callFlapg(idToken, guid, timestamp, "app");

@@ -1,7 +1,5 @@
 export const splatnetUrl = `https://app.splatoon2.nintendo.net`;
 export const clientId = "71b963c1b7b6d119";
-export const nsoappVersion = "1.13.2";
-export const userAgent = `iksm/${nsoappVersion} iksm-chan Android`;
 export const customURLScheme = `npf${clientId}`;
 export const redirectURL = `${customURLScheme}://auth`;
 export const scope = "openid user user.birthday user.mii user.screenName";
@@ -16,3 +14,4 @@ export const splatoonTokenURI =
   "https://api-lp1.znc.srv.nintendo.net/v1/Account/Login";
 export const splatoonAccessTokenURI =
   "https://api-lp1.znc.srv.nintendo.net/v2/Game/GetWebServiceToken";
+1;
