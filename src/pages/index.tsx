@@ -132,7 +132,7 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
           get iksm →
         </button>
 
-        <div className="stat w-full">
+        <div className="stat w-full bg-base-100">
           <div className="stat-title">
             iksm_session
             {sessionToken && (

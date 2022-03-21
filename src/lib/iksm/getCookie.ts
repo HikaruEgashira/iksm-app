@@ -43,8 +43,6 @@ export const getCookie = async (
   if ("error" in splatoonToken) {
     return splatoonToken;
   }
-  console.log(splatoonToken);
-
   if (!splatoonToken.result) {
     return {
       error: JSON.stringify(splatoonToken.result),

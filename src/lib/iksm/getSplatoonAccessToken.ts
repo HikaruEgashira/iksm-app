@@ -1,6 +1,7 @@
 import * as constants from "../config";
 import { SuccessResponse as FlapgApp } from "./callFlapg";
 import { ErrorResponse } from "../types";
+import { getNsoappVersion } from "../nsoapp";
 
 interface SuccessResponse {
   result: {
@@ -13,14 +14,14 @@ export const getSplatoonAccessToken = async (
   idToken: string,
   flapgApp: FlapgApp
 ): Promise<ErrorResponse | SuccessResponse> => {
+  const nsoappVersion = await getNsoappVersion();
   const options: RequestInit = {
     method: "POST",
     headers: {
       Host: "api-lp1.znc.srv.nintendo.net",
-      "User-Agent":
-        "com.nintendo.znca/" + constants.nsoappVersion + " (Android/7.1.2)",
+      "User-Agent": "com.nintendo.znca/" + nsoappVersion + " (Android/7.1.2)",
       Accept: "application/json",
-      "X-ProductVersion": constants.nsoappVersion,
+      "X-ProductVersion": nsoappVersion,
       "Content-Type": "application/json; charset=utf-8",
       Connection: "Keep-Alive",
       Authorization: `Bearer ${idToken}`,
