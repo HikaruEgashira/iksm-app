@@ -95,6 +95,22 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
     console.log(results);
     toast.success("ok!");
   };
+  const schedules = async () => {
+    const rowSchedules = await fetch(
+      `/api/splatoon/schedules?iksm_session=${iksmSession}`
+    );
+    const results: Results = await rowSchedules.json();
+    console.log(results);
+    toast.success("ok!");
+  };
+  const stages = async () => {
+    const rowStages = await fetch(
+      `/api/splatoon/stages?iksm_session=${iksmSession}`
+    );
+    const results: Results = await rowStages.json();
+    console.log(results);
+    toast.success("ok!");
+  };
 
   return (
     <main
@@ -198,6 +214,12 @@ const Home: NextPage<Props> = ({ q, url, sessionTokenCodeVerifier }) => {
               </button>
               <button className="btn" onClick={results}>
                 call results
+              </button>
+              <button className="btn" onClick={schedules}>
+                call schedules
+              </button>
+              <button className="btn" onClick={stages}>
+                call stages
               </button>
             </div>
           </>

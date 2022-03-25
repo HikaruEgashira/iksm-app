@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import pMemoize from "p-memoize";
 import { getCookie, SuccessResponse } from "~/lib/iksm/getCookie";
 import { jsonParse } from "~/lib/jsonParse";
 import { ErrorResponse } from "~/lib/types";
+
+const mGetCookie = pMemoize(getCookie);
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,7 +22,7 @@ export default async function handler(
     return res.status(400).json({ error: "sessionToken is required" });
   }
 
-  const cookie = await getCookie(sessionToken, "ja-JP");
+  const cookie = await mGetCookie(sessionToken, "ja-JP");
   if ("error" in cookie) {
     return res.status(400).json(cookie);
   }
