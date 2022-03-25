@@ -58,6 +58,9 @@ export default async function handler(
       })),
   });
 
-  res.setHeader("Cache-Control", "s-maxage=10800");
+  res.setHeader(
+    "Cache-Control",
+    "s-maxage=10800, stale-while-revalidate=75600"
+  );
   res.send(calendar.toString());
 }
