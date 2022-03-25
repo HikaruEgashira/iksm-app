@@ -17,6 +17,8 @@
     "crypto": "^1.0.1",
     "daisy-theme-nord": "^1.8.0",
     "daisyui": "^2.11.0",
+    "dayjs": "^1.11.0",
+    "ical-generator": "^3.4.0",
     "light-toast": "^0.3.5",
     "next": "12.1.0",
     "p-memoize": "^6.0.1",
