@@ -3,9 +3,9 @@ import { ErrorResponse } from "../types";
 
 const API_URL = `${splatnetUrl}/api/data/stages`;
 
-interface RecordResponse {}
+interface StagesResponse {}
 
-export type SuccessResponse = RecordResponse;
+export type SuccessResponse = StagesResponse;
 
 export const getStages = async (
   iksm_session: string

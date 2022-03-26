@@ -36,7 +36,7 @@ export default async function handler(
 
   const iksmSession = cookie.iksmSession;
   const schedules = await mGetSchedules(iksmSession);
-  if ("error" in schedules) {
+  if ("error" in schedules || "message" in schedules) {
     return res.status(400).json(schedules);
   }
 

@@ -21,13 +21,13 @@ interface Schedule {
   stage_b: Stage;
 }
 
-interface RecordResponse {
+interface SchedulesResponse {
   gachi: Schedule[];
   league: Schedule[];
   regular: Schedule[];
 }
 
-export type SuccessResponse = RecordResponse;
+export type SuccessResponse = SchedulesResponse;
 
 export const getSchedules = async (
   iksm_session: string
