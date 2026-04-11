@@ -21,7 +21,7 @@
     "expiry-map": "^2.0.0",
     "ical-generator": "^3.4.0",
     "light-toast": "^0.3.5",
-    "next": "12.1.0",
+    "next": "15.5.15",
     "p-memoize": "^6.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
