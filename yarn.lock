@@ -55,21 +55,12 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/runtime-corejs3@^7.10.2", "@babel/runtime-corejs3@^7.11.2":
-  version "7.15.3"
-  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.15.3.tgz#28754263988198f2a928c09733ade2fb4d28089d"
-  integrity sha512-30A3lP+sRL6ml8uhoJSs+8jwpKzbw8CqBvDc1laeptxPm5FahumJxirigcbD2qTs71Sonvj1cyZB0OKGAmxQ+A==
+"@babel/runtime-corejs3@^7.10.2", "@babel/runtime-corejs3@^7.11.2", "@babel/runtime-corejs3@^7.16.8":
+  version "7.29.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.29.2.tgz#cb86ad06e7a1d39224afb12a874301085e071846"
+  integrity sha512-Lc94FOD5+0aXhdb0Tdg3RUtqT6yWbI/BbFWvlaSJ3gAb9Ks+99nHRDKADVqC37er4eCB0fHyWT+y+K3QOvJKbw==
   dependencies:
-    core-js-pure "^3.16.0"
-    regenerator-runtime "^0.13.4"
-
-"@babel/runtime-corejs3@^7.16.8":
-  version "7.17.8"
-  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.17.8.tgz#d7dd49fb812f29c61c59126da3792d8740d4e284"
-  integrity sha512-ZbYSUvoSF6dXZmMl/CYTMOvzIFnbGfv4W3SEHYgMvNsFTeLaF2gkGAF4K2ddmtSK4Emej+0aYcnSC6N5dPCXUQ==
-  dependencies:
-    core-js-pure "^3.20.2"
-    regenerator-runtime "^0.13.4"
+    core-js-pure "^3.48.0"
 
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.16.3", "@babel/runtime@^7.3.1", "@babel/runtime@^7.9.2":
   version "7.29.2"
@@ -953,15 +944,10 @@ copy-to-clipboard@^3, copy-to-clipboard@^3.3.1:
   dependencies:
     toggle-selection "^1.0.6"
 
-core-js-pure@^3.16.0:
-  version "3.16.2"
-  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.16.2.tgz#0ef4b79cabafb251ea86eb7d139b42bd98c533e8"
-  integrity sha512-oxKe64UH049mJqrKkynWp6Vu0Rlm/BTXO/bJZuN2mmR3RtOFNepLlSWDd1eo16PzHpQAoNG97rLU1V/YxesJjw==
-
-core-js-pure@^3.20.2:
-  version "3.21.1"
-  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.21.1.tgz#8c4d1e78839f5f46208de7230cebfb72bc3bdb51"
-  integrity sha512-12VZfFIu+wyVbBebyHmRTuEE/tZrB4tJToWcwAMcsp3h4+sHR+fMJWbKpYiCRWlhFBq+KNyO8rIV9rTkeVmznQ==
+core-js-pure@^3.48.0:
+  version "3.49.0"
+  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.49.0.tgz#ff8436b7251a3832f5fdbbe3e10f7f2e58e51fb1"
+  integrity sha512-XM4RFka59xATyJv/cS3O3Kml72hQXUeGRuuTmMYFxwzc9/7C8OYTaIR/Ji+Yt8DXzsFLNhat15cE/JP15HrCgw==
 
 cosmiconfig@^7.0.1:
   version "7.0.1"
@@ -2983,11 +2969,6 @@ refractor@^3.6.0:
     hastscript "^6.0.0"
     parse-entities "^2.0.0"
     prismjs "~1.27.0"
-
-regenerator-runtime@^0.13.4:
-  version "0.13.9"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
-  integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
 
 regexp.prototype.flags@^1.4.1:
   version "1.4.1"
